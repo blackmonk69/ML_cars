@@ -1,35 +1,34 @@
-import sys
-sys.path.insert(0, "..")
+
 import streamlit as st
 #from utils import PreProcesor, columns 
 
 import numpy as np
 import pandas as pd
 import joblib
+import pickle
+import sklearn
 
-# model = joblib.load('xgbpipe.joblib')
-st.title('Did they survive? :ship:')
-# PassengerId,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
-passengerid = st.text_input("Input Passenger ID", '123456') 
-pclass = st.selectbox("Choose class", [1,2,3])
-name  = st.text_input("Input Passenger Name", 'John Smith')
-sex = st.select_slider("Choose sex", ['male','female'])
-age = st.slider("Choose age",0,100)
-sibsp = st.slider("Choose siblings",0,10)
-parch = st.slider("Choose parch",0,2)
-ticket = st.text_input("Input Ticket Number", "12345") 
-fare = st.number_input("Input Fare Price", 0,1000)
-cabin = st.text_input("Input Cabin", "C52") 
-embarked = st.select_slider("Did they Embark?", ['S','C','Q'])
+model=pickle.load(open('LinearRegressionModel.pkl','rb'))
+car=pd.read_csv('Cleaned_Car_data.csv')
+st.title('Predicting Car Prices using ML and a Linear Regression Model')
+names=sorted(car['name'].unique())
+companies=sorted(car['company'].unique())
+car_models=sorted(car['name'].unique())
+years=sorted(car['year'].unique(),reverse=True)
+fuel_types=car['fuel_type'].unique()
+companies.insert(0,'Select Company')
+# 'name', 'company', 'year', 'kms_driven', 'fuel_type'
 
-def predict(): 
-    row = np.array([passengerid,pclass,name,sex,age,sibsp,parch,ticket,fare,cabin,embarked]) 
-    X = pd.DataFrame([row], columns = columns)
-    prediction = model.predict(X)
-    if prediction[0] == 1: 
-        st.success('Passenger Survived :thumbsup:')
-    else: 
-        st.error('Passenger did not Survive :thumbsdown:') 
-
-trigger = st.button('Predict', on_click=predict)
-
+names=st.selectbox("choose name",names)
+company = st.selectbox("Choose company",companies)
+company="Audi"
+car_model  = st.selectbox("Choose Car Model", car_models)
+year = st.selectbox("Choose year", years)
+fuel_type= st.selectbox("Choose fuel type",fuel_types)
+driven=st.text_input ('km driven')
+driven=3455
+prediction=model.predict(pd.DataFrame(columns=['name', 'company', 'year', 'kms_driven', 'fuel_type'],
+                              data=np.array([car_model,company,year,driven,fuel_type]).reshape(1, 5)))
+print(prediction)
+st.write(f"la prediccion es {prediction}")
+#trigger = st.button('Predict', on_click=predict)
