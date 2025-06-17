@@ -32,3 +32,5 @@ prediction=model.predict(pd.DataFrame(columns=['name', 'company', 'year', 'kms_d
 print(prediction)
 st.write(f"la prediccion es {prediction}")
 #trigger = st.button('Predict', on_click=predict)
+
+#return str(np.round(prediction[0],2))
