@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 
 import pickle
-import sklearn
 
 model=pickle.load(open('LinearRegressionModel.pkl','rb'))
 car=pd.read_csv('Cleaned_Car_data.csv')
