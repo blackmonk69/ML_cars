@@ -24,14 +24,14 @@ driven = st.text_input ('km driven')
 def predict(car_model,company,year,driven,fuel_type):
     prediction=model.predict(pd.DataFrame(columns=['name', 'company', 'year', 'kms_driven', 'fuel_type'],
                               data=np.array([car_model,company,year,driven,fuel_type]).reshape(1, 5)))
-    return str(np.round(prediction[0],2))
+    return round(prediction[0])
     
     
 
 if st.button("Predict value"):
     # Get the all values from predict function.
     # score, pred_price, rsquare_score, mae, msle, rmse = predict(df, feature_list)
-    prediccion=predict (car_model,company,year,driven,fuel_type)
-    st.subheader (f"la prediccion es {prediccion}")
+    prediccion='{:,}'.format(predict (car_model,company,year,driven,fuel_type))
+    st.subheader (f"la prediccion es: $ {prediccion}")
     
 
